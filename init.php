@@ -7,17 +7,25 @@ require_once ROOT . '/vendor/autoload.php';
 
 $f3 = Base::instance();
 
-$f3->config([
-    ROOT . '/cfg/system.ini',
-    ROOT . '/cfg/local.ini',
-]);
-
 $f3->mset([
+    //system code
     'AUTOLOAD' => ROOT . '/src/',
     'LOCALES' => ROOT . '/dict/',
-    'LOGS' => ROOT . '/runtime/logs/',
     'UI' => ROOT . '/tpl/',
-    'UPLOADS' => ROOT . '/runtime/uploads/',
+    //runtime data
+    'LOGS' => RUNTIME . '/logs/',
+    'TEMP' => RUNTIME . '/temp/',
+    'UPLOADS' => RUNTIME . '/uploads/',
+    //cache ['/path/to/cache','memcache=localhost:11211','redis=localhost:6379']
+    'CACHE' => true,
+    //debug ranging from 0 (stack trace suppressed) to 3 (most verbose)
+    'DEBUG' => 3,
+]);
+
+$f3->config([
+    ROOT . '/cfg/map.ini',
+    ROOT . '/cfg/route.ini',
+    RUNTIME . '/config.ini',
 ]);
 
 $f3->set('LOGGER', new Log(date('Y-m-d.\l\o\g')));
