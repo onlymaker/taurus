@@ -60,36 +60,30 @@
             location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
         });
         $("button.btn-confirm").on("click", function () {
-            let formData = new FormData();
+            let data = {};
             $("tr").each(function () {
                 let cells = $(this).find("td");
                 let text = $(this).find("input").val();
                 if (cells.length === 3) {
-                    formData.set(cells.eq(0).text(), text || cells.eq(1).text());
+                    data[cells.eq(0).text()] = text || cells.eq(1).text();
                 } else {
                     let append = text.split(":");
                     if (append.length === 2) {
-                        formData.set(append[0], append[1]);
+                        data[append[0]] = append[1];
                     }
                 }
-            })
-            $.ajax({
-                url: location.href,
-                type: "POST",
-                cache: false,
-                data: formData,
-                contentType: false,
-                processData: false,
-                beforeSend: beforeSend
-            }).done(function (data, textStatus, jqXHR) {
-                console.log(data, textStatus, jqXHR);
-                if (data === 'success') {
-                    location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
-                } else {
-                    alert(data);
-                }
-            }).fail(alert)
-              .always(finishRequest);
+            });
+            beforeSend();
+            $.post(location.href, data)
+                .done(function (data) {
+                    if (data === 'success') {
+                        location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
+                    } else {
+                        alert(data);
+                    }
+                })
+                .fail(generalCallback)
+                .always(finishRequest);
         });
     });
 
@@ -98,7 +92,7 @@
     }
 
     function finishRequest(data) {
-        console.log(data, "finish request");
+        console.log("finish request", data);
         $("#process").modal("hide");
     }
 </script>

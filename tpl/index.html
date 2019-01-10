@@ -71,14 +71,13 @@
                 $("#process").on("shown.bs.modal", function () {
                     $.post("{{@BASE}}/delete/" + id)
                         .done(function (data) {
-                            console.log(data);
                             if (data === "success") {
                                 row.remove();
                             } else {
                                 alert(data);
                             }
                         })
-                        .fail(console.log)
+                        .fail(generalCallback)
                         .always(finishRequest);
                 });
             }
@@ -90,7 +89,7 @@
     }
 
     function finishRequest(data) {
-        console.log(data, "finish request");
+        console.log("finish request", data);
         $("#process").modal("hide");
     }
 </script>

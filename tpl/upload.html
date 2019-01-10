@@ -47,14 +47,17 @@
                 console.log("POST ... " + file.name);
                 disableUpload();
             }
-        }).done(function (data, textStatus, jqXHR) {
-            console.log(data, textStatus, jqXHR);
-            if (data === 'success') {
-                location.href = "{{@BASE}}/upload/1";
-            } else {
-                alert(data);
-            }
-        }).fail(console.log).always(enableUpload);
+        })
+            .done(function (data, textStatus, jqXHR) {
+                console.log(data, textStatus, jqXHR);
+                if (data === 'success') {
+                    location.href = "{{@BASE}}/upload/1";
+                } else {
+                    alert(data);
+                }}
+            )
+            .fail(generalCallback)
+            .always(enableUpload);
     }
 
     function disableUpload() {

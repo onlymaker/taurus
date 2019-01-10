@@ -74,10 +74,7 @@
                     alert(data);
                     console.log(textStatus, jqXHR);
                 })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus);
-                    console.log(textStatus, jqXHR, errorThrown);
-                })
+                .fail(generalCallback)
                 .always(function () {
                     $("#login-submit").removeAttr("disabled");
                 })

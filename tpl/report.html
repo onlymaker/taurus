@@ -75,10 +75,7 @@
         });
         $("i.fa-upload").on("click", function () {
             beforeSend();
-            $.post("{{@BASE}}/report/submit/{{@type}}/" + $(this).data("id"))
-                .done(console.log)
-                .fail(alert)
-                .always(finishRequest);
+            $.post("{{@BASE}}/report/submit/{{@type}}/" + $(this).data("id")).always(finishRequest);
         });
     });
 
@@ -87,7 +84,7 @@
     }
 
     function finishRequest(data) {
-        console.log(data, "finish request");
+        console.log("finish request", data);
         $("#process").modal("hide");
     }
 </script>
