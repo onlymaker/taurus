@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{@type}} Report</title>
+    <include href="common/header.html"/>
+    <style>
+        .fa {
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .fa-edit {
+            float: right;
+            color: blue;
+        }
+        .fa-upload {
+            color: green;
+        }
+        .fa-spinner {
+            color: blue;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+<include href="common/navbar.html"/>
+<table class="table table-stripped">
+    <thead class="thead-dark">
+    <tr>
+        <th>Create Time</th>
+        <th>Trace Id</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th>Report</th>
+        <th>Response</th>
+        <th></th>
+    </tr>
+    </thead>
+    <repeat group="{{@data}}" value="{{@item}}">
+        <tr>
+            <td>{{@item['create_time']}}</td>
+            <td>{{@item['oid']}}</td>
+            <td>{{@item['data']}}&nbsp;<i class="fa fa-edit" data-id="{{@item['id']}}">&nbsp;modify</i></td>
+            <td>{{@item['report_' . @type . '_status']}}</td>
+            <td>{{@item['content']}}</td>
+            <td>{{@item['response']}}</td>
+            <check if="{{@item['report_' . @type . '_status'] == 0}}">
+                <true>
+                    <td class="cell-report"><i class="fa fa-upload" data-id="{{@item['id']}}">&nbsp;report</i></td>
+                </true>
+                <false>
+                    <td></td>
+                </false>
+            </check>
+        </tr>
+    </repeat>
+</table>
+<nav>
+    <ul class="pagination justify-content-center"></ul>
+</nav>
+<div id="process" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Requesting</h5>
+            </div>
+            <div class="modal-body"><i class="fa fa-spinner fa-pulse animated"></i></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("ul.pagination").append(pagination("{{@pageNo}}", "{{@pageCount}}", "{{@BASE}}/report/{{@type}}/"));
+        $("i.fa-edit").on("click", function () {
+            location.href = "{{@BASE}}/report/update/" + $(this).data("id") + "?type={{@type}}&pageNo={{@pageNo}}"
+        });
+        $("i.fa-upload").on("click", function () {
+            beforeSend();
+            $.post("{{@BASE}}/report/submit/{{@type}}/" + $(this).data("id"))
+                .done(console.log)
+                .fail(alert)
+                .always(finishRequest);
+        });
+    });
+
+    function beforeSend() {
+        $("#process").modal("show");
+    }
+
+    function finishRequest(data) {
+        console.log(data, "finish request");
+        $("#process").modal("hide");
+    }
+</script>
+</body>
+</html>

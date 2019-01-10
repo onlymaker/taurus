@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modify Report [{{@id}}]</title>
+    <include href="common/header.html"/>
+    <style>
+        .fa {
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .fa-spinner {
+            color: blue;
+            font-size: 1.2rem;
+        }
+        div.justify-content-center {
+            width: 100%;
+        }
+        div.btn-group {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<include href="common/navbar.html"/>
+<table class="table table-stripped">
+    <repeat group="{{@data}}" key="{{@key}}" value="{{@value}}">
+        <tr>
+            <td>{{@key}}</td>
+            <td>{{@value}}</td>
+            <td><input class="form-control" placeholder="Leave empty if you don't wanna modify the value"/></td>
+        </tr>
+    </repeat>
+</table>
+<div class="justify-content-center">
+    <div class="btn-group">
+        <check if="{{@SESSION['AUTHENTICATION'] == 'debug'}}">
+            <button class="btn btn-outline-primary btn-append">Append</button>
+        </check>
+        <button class="btn btn-outline-primary btn-cancel">Cancel</button>
+        <button class="btn btn-outline-primary btn-confirm">Confirm</button>
+    </div>
+</div>
+<div id="process" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Requesting</h5>
+            </div>
+            <div class="modal-body"><i class="fa fa-spinner fa-pulse animated"></i></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("button.btn-append").on("click", function () {
+            $("table").append("<tr><td colspan='3'><input class='form-control'/></td></tr>");
+        });
+        $("button.btn-cancel").on("click", function () {
+            location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
+        });
+        $("button.btn-confirm").on("click", function () {
+            let formData = new FormData();
+            $("tr").each(function () {
+                let cells = $(this).find("td");
+                let text = $(this).find("input").val();
+                if (cells.length === 3) {
+                    formData.set(cells.eq(0).text(), text || cells.eq(1).text());
+                } else {
+                    let append = text.split(":");
+                    if (append.length === 2) {
+                        formData.set(append[0], append[1]);
+                    }
+                }
+            })
+            $.ajax({
+                url: location.href,
+                type: "POST",
+                cache: false,
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: beforeSend
+            }).done(function (data, textStatus, jqXHR) {
+                console.log(data, textStatus, jqXHR);
+                if (data === 'success') {
+                    location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
+                } else {
+                    alert(data);
+                }
+            }).fail(alert)
+              .always(finishRequest);
+        });
+    });
+
+    function beforeSend() {
+        $("#process").modal("show");
+    }
+
+    function finishRequest(data) {
+        console.log(data, "finish request");
+        $("#process").modal("hide");
+    }
+</script>
+</body>
+</html>

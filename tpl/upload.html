@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{@dict['upload']['title']}}</title>
+    <include href="common/header.html"/>
+    <style>
+        .container {
+            margin: 50px auto;
+        }
+        .form-control {
+            margin: 25px auto;
+        }
+    </style>
+</head>
+<body>
+<include href="common/navbar.html"/>
+<div class="container">
+    <form id="upload-form">
+        <input id="upload-file" class="form-control" type="file" name="upload-test"/>
+        <button class="btn btn-primary post" type="button">POST</button>
+    </form>
+    <table class="table"></table>
+</div>
+<script>
+    $(function () {
+        $("button.post").on("click", post);
+    });
+
+    function post() {
+        let file = fileInfo(document.getElementById("upload-file"));
+        if (!file) {
+            alert("{{@dict['upload']['file_required']}}");
+            return;
+        }
+        let formData = new FormData();
+        formData.set("enctype", "multipart/form-data");
+        formData.append("name", file.name);
+        formData.append("file", file);
+        $.ajax({
+            url: "{{@base}}/upload/",
+            type: "POST",
+            cache: false,
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                console.log("POST ... " + file.name);
+                disableUpload();
+            }
+        }).done(function (data, textStatus, jqXHR) {
+            console.log(data, textStatus, jqXHR);
+            if (data === 'success') {
+                location.href = "{{@BASE}}/upload/1";
+            } else {
+                alert(data);
+            }
+        }).fail(console.log).always(enableUpload);
+    }
+
+    function disableUpload() {
+        $("button.btn")
+            .attr("disabled", "disabled")
+            .html('<i class="fa fa-spinner fa-pulse animated">');
+    }
+
+    function enableUpload() {
+        $("button.btn")
+            .removeAttr("disabled")
+            .text("POST");
+    }
+</script>
+</body>
+</html>

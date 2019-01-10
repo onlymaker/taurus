@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ceb:CEB505Message guid="311af125-6fed-4603-8c5d-49b1fa4b4b9b" version="1.0"  xmlns:ceb="http://www.chinaport.gov.cn/ceb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<repeat group="{{@logistics}}" value="{{@item}}">
+		<ceb:Logistics>
+			<ceb:guid>{{@item['guid']}}</ceb:guid>
+			<ceb:appType>{{@item['appType']}}</ceb:appType>
+			<ceb:appTime>{{@item['appTime']}}</ceb:appTime>
+			<ceb:appStatus>{{@item['appStatus']}}</ceb:appStatus>
+			<ceb:logisticsCode>{{@item['logisticsCode']}}</ceb:logisticsCode>
+			<ceb:logisticsName>{{@item['logisticsName']}}</ceb:logisticsName>
+			<ceb:logisticsNo>{{@item['logisticsNo']}}</ceb:logisticsNo>
+			<ceb:freight>{{@item['freight']}}</ceb:freight>
+			<ceb:insuredFee>{{@item['insuredFee']}}</ceb:insuredFee>
+			<ceb:currency>{{@item['currency']}}</ceb:currency>
+			<ceb:grossWeight>{{@item['grossWeight']}}</ceb:grossWeight>
+			<ceb:packNo>{{@item['packNo']}}</ceb:packNo>
+			<ceb:goodsInfo>{{@item['goodsInfo']}}</ceb:goodsInfo>
+			<ceb:ebcCode>{{@item['ebcCode']}}</ceb:ebcCode>
+			<ceb:ebcName>{{@item['ebcName']}}</ceb:ebcName>
+			<ceb:ebcTelephone>{{@item['ebcTelephone']}}</ceb:ebcTelephone>
+			<ceb:note>{{@item['note']}}</ceb:note>
+		</ceb:Logistics>
+	</repeat>
+	<ceb:BaseTransfer>
+		<ceb:copCode>{{@baseTransfer['copCode']}}</ceb:copCode>
+		<ceb:copName>{{@baseTransfer['copName']}}</ceb:copName>
+		<ceb:dxpMode>{{@baseTransfer['dxpMode']}}</ceb:dxpMode>
+		<ceb:dxpId>{{@baseTransfer['dxpId']}}</ceb:dxpId>
+		<ceb:note>{{@baseTransfer['note']}}</ceb:note>
+	</ceb:BaseTransfer>
+</ceb:CEB505Message>

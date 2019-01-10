@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{@dict['index_title']}}</title>
+    <include href="common/header.html"/>
+    <style>
+        .fa {
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .fa-unlink {
+            color: red;
+        }
+        .fa-spinner {
+            color: blue;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+<include href="common/navbar.html"/>
+<table class="table table-stripped">
+    <thead class="thead-dark">
+    <tr>
+        <th>Create Time</th>
+        <th>Trace Id</th>
+        <th>Stage</th>
+        <th>Data</th>
+        <th></th>
+    </tr>
+    </thead>
+    <repeat group="{{@data}}" value="{{@item}}">
+        <tr>
+            <td>{{@item['create_time']}}</td>
+            <td>{{@item['oid']}}</td>
+            <td>{{@item['stage']}}</td>
+            <td>{{@item['data']}}</td>
+            <check if="{{@item['status'] == 0}}">
+                <true>
+                    <td class="cell-delete" data-id="{{@item['id']}}"><i class="fa fa-unlink">&nbsp;删除</i></td>
+                </true>
+                <false>
+                    <td></td>
+                </false>
+            </check>
+        </tr>
+    </repeat>
+</table>
+<nav>
+    <ul class="pagination justify-content-center"></ul>
+</nav>
+<div id="process" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Requesting</h5>
+            </div>
+            <div class="modal-body"><i class="fa fa-spinner fa-pulse animated"></i></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("ul.pagination").append(pagination("{{@pageNo}}", "{{@pageCount}}", "{{@BASE}}/upload/"));
+
+        $(".cell-delete").on("click", function () {
+            let id = $(this).data("id");
+            if (confirm("确认删除?")) {
+                let row = $(this).parent();
+                beforeSend();
+                $("#process").on("shown.bs.modal", function () {
+                    $.post("{{@BASE}}/delete/" + id)
+                        .done(function (data) {
+                            console.log(data);
+                            if (data === "success") {
+                                row.remove();
+                            } else {
+                                alert(data);
+                            }
+                        })
+                        .fail(console.log)
+                        .always(finishRequest);
+                });
+            }
+        });
+    });
+
+    function beforeSend() {
+        $("#process").modal("show");
+    }
+
+    function finishRequest(data) {
+        console.log(data, "finish request");
+        $("#process").modal("hide");
+    }
+</script>
+</body>
+</html>

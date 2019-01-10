@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ceb:CEB303Message guid="311af125-6fed-4603-8c5d-49b1fa4b4b9b" version="1.0" xmlns:ceb="http://www.chinaport.gov.cn/ceb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <repeat group="{{@order}}" value="{{@item}}">
+        <ceb:Order>
+            <ceb:OrderHead>
+                <ceb:guid>{{@item['head']['guid']}}</ceb:guid>
+                <ceb:appType>{{@item['head']['appType']}}</ceb:appType>
+                <ceb:appTime>{{@item['head']['appTime']}}</ceb:appTime>
+                <ceb:appStatus>{{@item['head']['appStatus']}}</ceb:appStatus>
+                <ceb:orderType>{{@item['head']['orderType']}}</ceb:orderType>
+                <ceb:orderNo>{{@item['head']['orderNo']}}</ceb:orderNo>
+                <ceb:ebpCode>{{@item['head']['ebpCode']}}</ceb:ebpCode>
+                <ceb:ebpName>{{@item['head']['ebpName']}}</ceb:ebpName>
+                <ceb:ebcCode>{{@item['head']['ebcCode']}}</ceb:ebcCode>
+                <ceb:ebcName>{{@item['head']['ebcName']}}</ceb:ebcName>
+                <ceb:goodsValue>{{@item['head']['goodsValue']}}</ceb:goodsValue>
+                <ceb:freight>{{@item['head']['freight']}}</ceb:freight>
+                <ceb:currency>{{@item['head']['currency']}}</ceb:currency>
+                <ceb:note>{{@item['head']['note']}}</ceb:note>
+            </ceb:OrderHead>
+            <ceb:OrderList>
+                <ceb:gnum>{{@item['list']['gnum']}}</ceb:gnum>
+                <ceb:itemNo>{{@item['list']['itemNo']}}</ceb:itemNo>
+                <ceb:itemName>{{@item['list']['itemName']}}</ceb:itemName>
+                <ceb:itemDescribe>{{@item['list']['itemDescribe']}}</ceb:itemDescribe>
+                <ceb:barCode>{{@item['list']['barCode']}}</ceb:barCode>
+                <ceb:unit>{{@item['list']['unit']}}</ceb:unit>
+                <ceb:currency>{{@item['list']['currency']}}</ceb:currency>
+                <ceb:qty>{{@item['list']['qty']}}</ceb:qty>
+                <ceb:price>{{@item['list']['price']}}</ceb:price>
+                <ceb:totalPrice>{{@item['list']['totalPrice']}}</ceb:totalPrice>
+                <ceb:note>{{@item['list']['note']}}</ceb:note>
+            </ceb:OrderList>
+        </ceb:Order>
+    </repeat>
+    <ceb:BaseTransfer>
+        <ceb:copCode>{{@baseTransfer['copCode']}}</ceb:copCode>
+        <ceb:copName>{{@baseTransfer['copName']}}</ceb:copName>
+        <ceb:dxpMode>{{@baseTransfer['dxpMode']}}</ceb:dxpMode>
+        <ceb:dxpId>{{@baseTransfer['dxpId']}}</ceb:dxpId>
+        <ceb:note>{{@baseTransfer['note']}}</ceb:note>
+    </ceb:BaseTransfer>
+</ceb:CEB303Message>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ceb:CEB607Message guid="311af125-6fed-4603-8c5d-49b1fa4b4b9b" version="1.0"  xmlns:ceb="http://www.chinaport.gov.cn/ceb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<repeat group="{{@waybill}}" value="{{@item}}">
+		<ceb:WayBill>
+			<ceb:WayBillHead>
+				<ceb:guid>{{@item['head']['guid']}}</ceb:guid>
+				<ceb:appType>{{@item['head']['appType']}}</ceb:appType>
+				<ceb:appTime>{{@item['head']['appTime']}}</ceb:appTime>
+				<ceb:appStatus>{{@item['head']['appStatus']}}</ceb:appStatus>
+				<ceb:customsCode>{{@item['head']['customsCode']}}</ceb:customsCode>
+				<ceb:copNo>{{@item['head']['copNo']}}</ceb:copNo>
+				<ceb:agentCode>{{@item['head']['agentCode']}}</ceb:agentCode>
+				<ceb:agentName>{{@item['head']['agentName']}}</ceb:agentName>
+				<ceb:loctNo>{{@item['head']['loctNo']}}</ceb:loctNo>
+				<ceb:trafMode>{{@item['head']['trafMode']}}</ceb:trafMode>
+				<ceb:trafName>{{@item['head']['trafName']}}</ceb:trafName>
+				<ceb:voyageNo>{{@item['head']['voyageNo']}}</ceb:voyageNo>
+				<ceb:billNo>{{@item['head']['billNo']}}</ceb:billNo>
+				<ceb:domesticTrafNo>{{@item['head']['domesticTrafNo']}}</ceb:domesticTrafNo>
+				<ceb:grossWeight>{{@item['head']['grossWeight']}}</ceb:grossWeight>
+				<ceb:logisticsCode>{{@item['head']['logisticsCode']}}</ceb:logisticsCode>
+				<ceb:logisticsName>{{@item['head']['logisticsName']}}</ceb:logisticsName>
+				<ceb:msgCount>{{@item['head']['msgCount']}}</ceb:msgCount>
+				<ceb:msgSeqNo>{{@item['head']['msgSeqNo']}}</ceb:msgSeqNo>
+				<ceb:note>{{@item['head']['note']}}</ceb:note>
+			</ceb:WayBillHead>
+			<ceb:WayBillList>
+				<ceb:gnum>{{@item['list']['gnum']}}</ceb:gnum>
+				<ceb:totalPackageNo>{{@item['list']['totalPackageNo']}}</ceb:totalPackageNo>
+				<ceb:logisticsNo>{{@item['list']['logisticsNo']}}</ceb:logisticsNo>
+				<ceb:note>{{@item['list']['note']}}</ceb:note>
+			</ceb:WayBillList>
+		</ceb:WayBill>
+	</repeat>
+	<ceb:BaseTransfer>
+		<ceb:copCode>{{@baseTransfer['copCode']}}</ceb:copCode>
+		<ceb:copName>{{@baseTransfer['copName']}}</ceb:copName>
+		<ceb:dxpMode>{{@baseTransfer['dxpMode']}}</ceb:dxpMode>
+		<ceb:dxpId>{{@baseTransfer['dxpId']}}</ceb:dxpId>
+		<ceb:note>{{@baseTransfer['note']}}</ceb:note>
+	</ceb:BaseTransfer>
+</ceb:CEB607Message>

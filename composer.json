@@ -1,0 +1,29 @@
+{
+    "name": "onlymaker/taurus",
+    "authors": [
+        {
+            "name": "jibo",
+            "email": "jibo@outlook.com"
+        }
+    ],
+    "license": "Unlicense",
+    "require": {
+        "ext-json": "*",
+        "bcosca/fatfree": "dev-3.6.5-syncxplus",
+        "phpoffice/phpspreadsheet": "^1.5",
+        "ramsey/uuid": "^3.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "repositories": {
+        "0": {
+            "type": "vcs",
+            "url": "https://github.com/syncxplus/fatfree"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}
