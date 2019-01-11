@@ -46,4 +46,5 @@ function generalCallback() {
         let arg = arguments[i];
         alert((typeof arg === "object") ? (isJsonObject(arg) ? JSON.stringify(arg) : Object.prototype.toString.call(arg)) : arg)
     }
+    console.log(arguments);
 }

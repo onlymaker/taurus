@@ -30,8 +30,7 @@
         <th>Trace Id</th>
         <th>Data</th>
         <th>Status</th>
-        <th>Report</th>
-        <th>Response</th>
+        <th>Message</th>
         <th></th>
     </tr>
     </thead>
@@ -41,8 +40,7 @@
             <td>{{@item['oid']}}</td>
             <td>{{@item['data']}}&nbsp;<i class="fa fa-edit" data-id="{{@item['id']}}">&nbsp;modify</i></td>
             <td>{{@item['report_' . @type . '_status']}}</td>
-            <td>{{@item['content']}}</td>
-            <td>{{@item['response']}}</td>
+            <td>{{@item['message']}}</td>
             <check if="{{@item['report_' . @type . '_status'] == 0}}">
                 <true>
                     <td class="cell-report"><i class="fa fa-upload" data-id="{{@item['id']}}">&nbsp;report</i></td>
@@ -74,8 +72,24 @@
             location.href = "{{@BASE}}/report/update/" + $(this).data("id") + "?type={{@type}}&pageNo={{@pageNo}}"
         });
         $("i.fa-upload").on("click", function () {
+            let obj = $(this);
             beforeSend();
-            $.post("{{@BASE}}/report/submit/{{@type}}/" + $(this).data("id")).always(finishRequest);
+            $.post({
+                url: "{{@BASE}}/report/submit/{{@type}}/" + obj.data("id"),
+                dataType: 'text',
+            })
+                .done(function (data) {
+                    let s = data.split(":");
+                    if (s.length === 2) {
+                        let fields = obj.parent().parent().find("td");
+                        fields.eq(3).text(s[0]);
+                        fields.eq(4).text(s[1]);
+                    } else {
+                        alert(data);
+                    }
+                })
+                .fail(generalCallback)
+                .always(finishRequest);
         });
     });
 
@@ -83,8 +97,7 @@
         $("#process").modal("show");
     }
 
-    function finishRequest(data) {
-        console.log("finish request", data);
+    function finishRequest() {
         $("#process").modal("hide");
     }
 </script>

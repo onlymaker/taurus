@@ -5,7 +5,6 @@ create table report_upload (
   oid varchar(100) generated always as (data ->> '$.trace_id'),
   guid char(36) not null default '',
   gnum int unsigned not null default 0,
-  status tinyint(1) unsigned not null default 0,#init:0,order:1,logistics:2,receipts:3,inventory:4,waybill:5,finish:100
   report_order_status tinyint(1) unsigned not null default 0,
   report_order_log int unsigned not null default 0,
   report_logistics_status tinyint(1) unsigned not null default 0,
@@ -23,7 +22,7 @@ create table report_upload (
 drop table if exists report_log;
 create table report_log (
   id int unsigned not null auto_increment primary key,
-  type tinyint(1) unsigned not null,#order:1,logistics:2,receipts:3,inventory:4,waybill:5
+  type varchar(10) not null,#order,logistics,receipts,inventory,waybill
   content text,
   response text,
   status varchar(10),

@@ -4,7 +4,6 @@ namespace app;
 
 use app\common\AppBase;
 use db\SqlMapper;
-use spec\_201809\ReportStage;
 
 class Index extends AppBase
 {
@@ -30,12 +29,9 @@ class Index extends AppBase
             );
             $page = $mapper->paginate($pageNo - 1, $pageSize, $filter, $option);
             foreach ($page['subset'] as $item) {
-                $data[] = array_merge(
-                    $item->cast(),
-                    [
-                        'stage' => $this->getStage($item),
-                    ]
-                );
+                $data[] = array_merge($item->cast(), [
+                    'init' => $item['report_order_log'] + $item['report_logistics_log'] + $item['report_receipts_log'] + $item['report_inventory_log'] + $item['report_waybill_log']
+                ]);
             }
         }
         $f3->set('pageNo', $pageNo);
@@ -49,17 +45,7 @@ class Index extends AppBase
         $id = $args['id'];
         $f3->get('LOGGER')->write("request to delete $id");
         $mapper = new SqlMapper('report_upload');
-        $mapper->erase(['id=? AND status=?', $id, ReportStage::INIT]);
+        $mapper->erase(['id=?', $id]);
         echo 'success';
-    }
-
-    private function getStage($item)
-    {
-        $name = ReportStage::getName($item['status']);
-        if (isset($item['report_' . $name . '_status'])) {
-            return $name . ($item['report_' . $name . '_status'] ? ':finish' : ':pending');
-        } else {
-            return $name;
-        }
     }
 }

@@ -63,10 +63,8 @@
 				<ceb:currency>{{@item['list']['currency']}}</ceb:currency>
 				<ceb:qty>{{@item['list']['qty']}}</ceb:qty>
 				<ceb:qty1>{{@item['list']['qty1']}}</ceb:qty1>
-				<ceb:qty2>{{@item['list']['qty2']}}</ceb:qty2>
 				<ceb:unit>{{@item['list']['unit']}}</ceb:unit>
 				<ceb:unit1>{{@item['list']['unit1']}}</ceb:unit1>
-				<ceb:unit2>{{@item['list']['unit2']}}</ceb:unit2>
 				<ceb:price>{{@item['list']['price']}}</ceb:price>
 				<ceb:totalPrice>{{@item['list']['totalPrice']}}</ceb:totalPrice>
 				<ceb:note>{{@item['list']['note']}}</ceb:note>

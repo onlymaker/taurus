@@ -5,7 +5,6 @@ namespace app;
 use app\common\AppBase;
 use db\Mysql;
 use db\SqlMapper;
-use spec\_201809\ReportStage;
 
 class Report extends AppBase
 {
@@ -15,31 +14,22 @@ class Report extends AppBase
     {
         $data = [];
         $type = $args['type'];
-        $status = ReportStage::all()[$type];
-        $filter = ['status=?', $status];
-        $option = [];
         $pageSize = $this->defaultPageSize;
 
         $mapper = new SqlMapper('report_upload');
-        $pageCount = ceil($mapper->count($filter, $option) / $pageSize);
+        $pageCount = ceil($mapper->count() / $pageSize);
 
         $pageNo = $args['pageNo'] ?: 1;
         if ($pageNo >= 1 && $pageNo <= $pageCount){
             $db = Mysql::instance()->get();
-            $reportTypeLog = 'report_' . $type . '_log';
-            $reportTypeStatus = 'report_' . $type . '_status';
             $offset = $pageSize * ($pageNo - 1);
             $data = $db->exec(<<<SQL
-            select u.*, l.content, l.response, l.status, l.message
-            from report_upload u left join report_log l
-            on u.$reportTypeLog=l.id
-            where u.status='$status'
-            order by $reportTypeStatus, create_time desc
+            select u.*, l.message
+            from report_upload u
+            left join report_log l on u.report_{$type}_log=l.id
+            order by report_{$type}_status, create_time desc
             limit $pageSize offset $offset
             SQL);
-            foreach ($data as &$item) {
-                $item['response'] = $item['status'] . $item['message'];
-            }
         }
         $f3->set('pageNo', $pageNo);
         $f3->set('pageCount', $pageCount);
@@ -73,15 +63,25 @@ class Report extends AppBase
         }
     }
 
-    function submit(\Base $f3, array $args)
+    function submit(\Base $f3)
     {
-        $id = $args['id'];
-        $report = new SqlMapper('report_upload');
-        $report->load(['id=?', $id], ['limit' => 1]);
-        if (!$report->dry()) {
-            $type = $args['type'];
-            $submit = new Submit($report);
-            $submit->$type();
+        $id = $f3->get('PARAMS.id');
+        $db = Mysql::instance()->get();
+        list($data) = $db->exec(<<<SQL
+        select r.*, o.price, p.model, d.distribution_number as express
+        from report_upload r
+        left join order_item o on r.oid=o.trace_id
+        left join prototype p on o.prototype_id=p.ID
+        left join distribution d on o.distribution_id=d.ID
+        where r.id=$id
+        limit 1
+        SQL);
+        if (empty($data['model'])) {
+            echo 'SKU not found';
+        } else if (empty($data['express'])) {
+            echo 'Express No not found';
+        } else {
+            (new Submit($data))->{$f3->get('PARAMS.type')}();
         }
     }
 

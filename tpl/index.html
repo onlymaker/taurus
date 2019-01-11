@@ -24,7 +24,6 @@
     <tr>
         <th>Create Time</th>
         <th>Trace Id</th>
-        <th>Stage</th>
         <th>Data</th>
         <th></th>
     </tr>
@@ -33,9 +32,8 @@
         <tr>
             <td>{{@item['create_time']}}</td>
             <td>{{@item['oid']}}</td>
-            <td>{{@item['stage']}}</td>
             <td>{{@item['data']}}</td>
-            <check if="{{@item['status'] == 0}}">
+            <check if="{{@item['init'] == 0}}">
                 <true>
                     <td class="cell-delete" data-id="{{@item['id']}}"><i class="fa fa-unlink">&nbsp;删除</i></td>
                 </true>
