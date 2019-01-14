@@ -90,5 +90,6 @@ class Report extends AppBase
         ob_start();
         var_dump($_REQUEST);
         $f3->get('LOGGER')->write(ob_get_clean());
+        echo 'SUCCESS';
     }
 }
