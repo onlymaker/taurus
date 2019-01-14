@@ -84,12 +84,4 @@ class Report extends AppBase
             (new Submit($data))->{$f3->get('PARAMS.type')}();
         }
     }
-
-    function callback(\Base $f3)
-    {
-        ob_start();
-        var_dump($_REQUEST);
-        $f3->get('LOGGER')->write(ob_get_clean());
-        echo 'SUCCESS';
-    }
 }
