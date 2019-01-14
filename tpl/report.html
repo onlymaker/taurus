@@ -38,7 +38,9 @@
         <tr>
             <td>{{@item['create_time']}}</td>
             <td>{{@item['oid']}}</td>
+            <check if="{{@SESSION['AUTHENTICATION'] == 'debug'}}">
             <td>{{@item['data']}}&nbsp;<i class="fa fa-edit" data-id="{{@item['id']}}">&nbsp;modify</i></td>
+            </check>
             <td>{{@item['report_' . @type . '_status']}}</td>
             <td>{{@item['message']}}</td>
             <check if="{{@item['report_' . @type . '_status'] == 0}}">
