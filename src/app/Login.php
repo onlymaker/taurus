@@ -3,6 +3,7 @@
 namespace app;
 
 use app\common\AppHelper;
+use db\SqlMapper;
 
 class Login
 {
@@ -40,6 +41,11 @@ class Login
 
     function validate($username, $password)
     {
-        return true;
+        $user = new SqlMapper('user');
+        $auth = new \Auth($user, [
+            'id' => 'username',
+            'pw' => 'password',
+        ]);
+        return $auth->login($username, $password);
     }
 }
