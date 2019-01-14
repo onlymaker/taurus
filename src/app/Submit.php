@@ -226,7 +226,7 @@ class Submit
         $head->loctNo = '';
         $head->licenseNo = '';
         $head->country = 502;
-        $head->POD = 'SFO';
+        $head->POD = 'LAX';
         $head->freight = 0;
         $head->fCurrency = 142;
         $head->fFlag = 3;
