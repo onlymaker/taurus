@@ -18,8 +18,7 @@ use spec\_201809\WaybillList;
 
 class Submit
 {
-    private $url = 'http://api.cdkjt.com.cn/cbec-gateway/rest/declare';
-    //private $url = 'http://118.122.120.156:7112/rest/declare';
+    private $url;
     private $data;
 
     function order()
@@ -356,6 +355,7 @@ class Submit
 
     function __construct($data)
     {
+        $this->url = \Base::instance()->get('REPORT_URL');
         $this->data = $data;
     }
 
