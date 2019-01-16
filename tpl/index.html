@@ -8,8 +8,14 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
+        .fa-edit {
+            color: blue;
+        }
         .fa-unlink {
             color: red;
+        }
+        .fa-upload {
+            color: green;
         }
         .fa-spinner {
             color: blue;
@@ -24,23 +30,22 @@
     <tr>
         <th>Create Time</th>
         <th>Trace Id</th>
-        <th>Data</th>
-        <th></th>
+        <th>Order</th>
+        <th>Logistics</th>
+        <th>Receipts</th>
+        <th>Inventory</th>
+        <th>Waybill</th>
     </tr>
     </thead>
     <repeat group="{{@data}}" value="{{@item}}">
         <tr>
             <td>{{@item['create_time']}}</td>
-            <td>{{@item['oid']}}</td>
-            <td>{{@item['data']}}</td>
-            <check if="{{@item['init'] == 0}}">
-                <true>
-                    <td class="cell-delete" data-id="{{@item['id']}}"><i class="fa fa-unlink">&nbsp;删除</i></td>
-                </true>
-                <false>
-                    <td></td>
-                </false>
-            </check>
+            <td>{{@item['oid']}}<check if="{{@SESSION['AUTHENTICATION'] == 'debug'}}"><i class="fa fa-edit" data-id="{{@item['id']}}">modify</i>&nbsp;<i class="fa fa-unlink" data-id="{{@item['id']}}">删除</i></check></td>
+            <td><check if="{{@item['report_order_status'] == 0}}"><true><i class="fa fa-upload" data-type="order" data-id="{{@item['id']}}"></i></true><false>{{@item['report_order_status']}}</false></check></td>
+            <td><check if="{{@item['report_logistics_status'] == 0}}"><true><i class="fa fa-upload" data-type="logistics" data-id="{{@item['id']}}"></i></true><false>{{@item['report_logistics_status']}}</false></check></td>
+            <td><check if="{{@item['report_receipts_status'] == 0}}"><true><i class="fa fa-upload" data-type="receipts" data-id="{{@item['id']}}"></i></true><false>{{@item['report_receipts_status']}}</false></check></td>
+            <td><check if="{{@item['report_inventory_status'] == 0}}"><true><i class="fa fa-upload" data-type="inventory" data-id="{{@item['id']}}"></i></true><false>{{@item['report_inventory_status']}}</false></check></td>
+            <td><check if="{{@item['report_waybill_status'] == 0}}"><true><i class="fa fa-upload" data-type="waybill" data-id="{{@item['id']}}"></i></true><false>{{@item['report_waybill_status']}}</false></check></td>
         </tr>
     </repeat>
 </table>
@@ -61,11 +66,36 @@
     $(function () {
         $("ul.pagination").append(pagination("{{@pageNo}}", "{{@pageCount}}", "{{@BASE}}/upload/"));
 
-        $(".cell-delete").on("click", function () {
+        $("i.fa-edit").on("click", function () {
+            location.href = "{{@BASE}}/report/update/" + $(this).data("id") + "?pageNo={{@pageNo}}"
+        });
+
+        $("i.fa-upload").on("click", function () {
+            let obj = $(this);
+            beforeRequest();
+            $.post({
+                url: "{{@BASE}}/report/submit/" + obj.data("type") + "/" + obj.data("id"),
+                dataType: 'text',
+            })
+                .done(function (data) {
+                    let s = data.split(":");
+                    if (s.length === 2) {
+                        let fields = obj.parent().parent().find("td");
+                        fields.eq(3).text(s[0]);
+                        fields.eq(4).text(s[1]);
+                    } else {
+                        alert(data);
+                    }
+                })
+                .fail(generalCallback)
+                .always(finishRequest);
+        });
+
+        $("i.fa-unlink").on("click", function () {
             let id = $(this).data("id");
             if (confirm("确认删除?")) {
-                let row = $(this).parent();
-                beforeSend();
+                let row = $(this).parent().parent();
+                beforeRequest();
                 $("#process").on("shown.bs.modal", function () {
                     $.post("{{@BASE}}/delete/" + id)
                         .done(function (data) {
@@ -82,7 +112,7 @@
         });
     });
 
-    function beforeSend() {
+    function beforeRequest() {
         $("#process").modal("show");
     }
 

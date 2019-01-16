@@ -56,9 +56,11 @@
         $("button.btn-append").on("click", function () {
             $("table").append("<tr><td colspan='3'><input class='form-control'/></td></tr>");
         });
+
         $("button.btn-cancel").on("click", function () {
-            location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
+            location.href = "{{@BASE}}/upload/{{@pageNo}}";
         });
+
         $("button.btn-confirm").on("click", function () {
             let data = {};
             $("tr").each(function () {
@@ -73,11 +75,11 @@
                     }
                 }
             });
-            beforeSend();
+            beforeRequest();
             $.post(location.href, data)
                 .done(function (data) {
                     if (data === 'success') {
-                        location.href = "{{@BASE}}/report/{{@type}}/{{@pageNo}}";
+                        location.href = "{{@BASE}}/upload/{{@pageNo}}";
                     } else {
                         alert(data);
                     }
@@ -87,7 +89,7 @@
         });
     });
 
-    function beforeSend() {
+    function beforeRequest() {
         $("#process").modal("show");
     }
 

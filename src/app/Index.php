@@ -7,7 +7,7 @@ use db\SqlMapper;
 
 class Index extends AppBase
 {
-    private $defaultPageSize = 50;
+    private $defaultPageSize = 20;
 
     function get(\Base $f3, array $args)
     {
@@ -30,7 +30,11 @@ class Index extends AppBase
             $page = $mapper->paginate($pageNo - 1, $pageSize, $filter, $option);
             foreach ($page['subset'] as $item) {
                 $data[] = array_merge($item->cast(), [
-                    'init' => $item['report_order_log'] + $item['report_logistics_log'] + $item['report_receipts_log'] + $item['report_inventory_log'] + $item['report_waybill_log']
+                    'report_order_status' => $this->getStatus($item['report_order_log']),
+                    'report_logistics_status' => $this->getStatus($item['report_logistics_status']),
+                    'report_receipts_status' => $this->getStatus($item['report_receipts_status']),
+                    'report_inventory_status' => $this->getStatus($item['report_inventory_status']),
+                    'report_waybill_status' => $this->getStatus($item['report_waybill_status']),
                 ]);
             }
         }
@@ -47,5 +51,16 @@ class Index extends AppBase
         $mapper = new SqlMapper('report_upload');
         $mapper->erase(['id=?', $id]);
         echo 'success';
+    }
+
+    private function getStatus($id)
+    {
+        $rLog = new SqlMapper('report_log');
+        $rLog->load(['id=?', $id], ['limit' => 1]);
+        if (!$rLog->dry()) {
+            return $rLog['status'] . ' ' . $rLog['message'];
+        } else {
+            return 0;
+        }
     }
 }

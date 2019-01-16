@@ -8,11 +8,6 @@
     <div class="collapse navbar-collapse" id="navbarMenuWrapper">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="{{@BASE}}/upload/1">{{@dict['nav_index']}}</a>
-            <a class="nav-item nav-link" href="{{@BASE}}/report/order/1">Order</a>
-            <a class="nav-item nav-link" href="{{@BASE}}/report/logistics/1">Logistics</a>
-            <a class="nav-item nav-link" href="{{@BASE}}/report/receipts/1">Receipts</a>
-            <a class="nav-item nav-link" href="{{@BASE}}/report/inventory/1">Inventory</a>
-            <a class="nav-item nav-link" href="{{@BASE}}/report/waybill/1">Waybill</a>
             <a class="nav-item nav-link" href="{{@BASE}}/Upload">{{@dict['nav_upload']}}</a>
         </div>
     </div>
@@ -32,6 +27,7 @@
                 return false;
             }
         });
+
         $("#logout").on("click", function () {
             let logoutModal = $("#default-modal");
             let logoutConfirm = $("#default-modal-confirm");
