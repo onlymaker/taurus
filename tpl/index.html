@@ -78,13 +78,23 @@
                 dataType: 'text',
             })
                 .done(function (data) {
-                    let s = data.split(":");
-                    if (s.length === 2) {
-                        let fields = obj.parent().parent().find("td");
-                        fields.eq(3).text(s[0]);
-                        fields.eq(4).text(s[1]);
-                    } else {
-                        alert(data);
+                    let fields = obj.parent().parent().find("td");
+                    switch (obj.data("type")) {
+                        case "order":
+                            fields.eq(2).text(data);
+                            break;
+                        case "logistics":
+                            fields.eq(3).text(data);
+                            break;
+                        case "receipts":
+                            fields.eq(4).text(data);
+                            break;
+                        case "inventory":
+                            fields.eq(5).text(data);
+                            break;
+                        case "waybill":
+                            fields.eq(6).text(data);
+                            break;
                     }
                 })
                 .fail(generalCallback)

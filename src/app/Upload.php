@@ -67,6 +67,9 @@ class Upload extends \Web
                     } else {
                         $mapper = new SqlMapper('report_upload');
                         foreach ($data as $item) {
+                            array_walk($item, function (&$string) {
+                                $string = preg_replace('/^\s+|\s+$/u', '', $string);
+                            });
                             $mapper->load(['oid=?', $item[0]]);
                             $mapper['data'] = json_encode(array_combine(self::ACCEPT_HEADER, $item));
                             $mapper->save();
